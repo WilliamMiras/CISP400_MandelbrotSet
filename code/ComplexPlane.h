@@ -1,14 +1,17 @@
-#ifndef COMPLEXPLAIN_H
-#define COMPLEXPLAIN_H
+#ifndef COMPLEXPLANE_H
+#define COMPLEXPLANE_H
 
+#include <stdlib.h>
+#include <stdint.h>
 #include <SFML/Graphics.hpp>
 
+using namespace std;
 using namespace sf;
 
-class ComplexPlain
+class ComplexPlane
 {
     public:
-    ComplexPlain(float aspectRatio);
+    ComplexPlane(float aspectRatio);
     void zoomIn();
     void zoomOut();
     void setCenter(Vector2f coord);
@@ -16,7 +19,7 @@ class ComplexPlain
     void setMouseLocation(Vector2f coord);
     void loadText(Text& text);
     size_t countIterations(Vector2f coord);
-    void iterationsToRGB(size_t count, Unit&& r, Unit&& g, Unit&& b);
+    void iterationsToRGB(size_t count, Unit8& r, Unit8& g, Unit8& b);
 
     private:
     Vector2f m_mouseLocation;
