@@ -46,17 +46,38 @@ void ComplexPlane::setMouseLocation(Vector2f coord)
 void ComplexPlane::loadText(Text& text)
 {
     //https://cplusplus.com/reference/sstream/stringstream/stringstream/
+    stringstream ss;
+
 }
 
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
+    size_t iter;
     //for loop to count how many iterations?
+    while(abs(sqrt(pow(coord.x,2)+ pow(coord.y,2))) < 2)
+    {
+
+
+        iter++;
+    }
+
+    return iter;
 }
 
-void ComplexPlane::iterationsToRGB(size_t count, Unit8& r, Unit8& g, Unit8& b)
+void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
     /*
         Professor says to complete later as this is hard to do.
         Also do not know what to include for Unit8&, looked it up and said to include stdint.h?
+        its actually Uint8! which is just an integer from 0 to 255.
     */
+   r = 255;
+   g = 255;
+   b = 255; // setting the values to white so we can do grayscale for testing
+   for(size_t i = count; i > 0; i--)
+   {
+    r--;
+    g--;
+    b--;
+   }
 }
