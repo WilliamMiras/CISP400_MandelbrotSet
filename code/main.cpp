@@ -39,7 +39,7 @@ CurrentState now = CALCULATING;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
-                window.close();
+                win.close();
             }
             if(event.type ==sf::Event::MouseMoved)
             {

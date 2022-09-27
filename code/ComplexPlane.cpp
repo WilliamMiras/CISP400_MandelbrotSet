@@ -54,6 +54,7 @@ void ComplexPlane::loadText(Text& text)
     float centerx,centery,cursorx,cursory;
     ss << m_view.getCenter().x << m_view.getCenter().y << m_mouseLocation.x << m_mouseLocation.y;
     ss >> centerx >> centery >> cursorx >>cursory;
+    text.setString("Mandelbrot Set\nCenter: (" + centerx + "," + centery + ")\n" )
 }
 
 size_t ComplexPlane::countIterations(Vector2f coord)
