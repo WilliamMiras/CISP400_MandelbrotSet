@@ -1,10 +1,15 @@
 #include "ComplexPlane.h"
+#include <SFML/Graphics.hpp>
+using namespace sf;
 int main()
 {
 Event event;
-float ratio = 1920/1080.0;
+
+int monitorWidth = VideoMode::getDesktopMode.width();
+int monitorHeight = VideoMode::getDesktopMode.height();
+VideoMode res(monitorWidth, monitorHeight);
+float ratio = monitorHeight/monitorWidth;
 ComplexPlane c(ratio);
-VideoMode res(1920,1080,32);
 RenderWindow win(res,"Mandlebrot Set", Style::Default);
 Font font;
 font.loadFromFile("/fonts/OldSchoolAdventures-42j9.ttf");
@@ -14,6 +19,11 @@ textbox.setOutlineColor(sf::Color::Black);
 textbox.setScale(2.4,2.4);
 textbox.setStyle(sf::Text::Bold);
 textbox.setPosition(0,0);
+VertexArray vertices;
+vertices.setPrimitiveType(Points);
+vertices.resize(monitorHeight*monitorWidth);
+enum CurrentState {CALCULATING,DISPLAYING };
+CurrentState now = CALCULATING;
 
     while(win.isOpen())
     {
@@ -28,8 +38,7 @@ textbox.setPosition(0,0);
                 if(event.mouseButton.button == sf::Mouse::Right)
                 {
                     Vector2f clicked;
-                    clicked.x = event.mouseButton.x;
-                    clicked.y = event.mouseButton.y;
+                    clicked = win.mapPixelToCoords(Mouse::getPosition(win));
                     c.zoomOut();
                     c.setCenter(clicked);
                 }
@@ -39,6 +48,22 @@ textbox.setPosition(0,0);
                 if(event.KeyPressed == sf::Keyboard::Escape)
                 {
                     win.close();
+                }
+            }
+            if(event.type ==sf::Event::MouseMoved)
+            {
+                c.setMouseLocation(win.mapPixelToCoords(Mouse::getPosition(win)));
+            }
+            if(now == CALCULATING)
+            {
+                Uint8 r,g,b;
+                for(int i = 0; i < monitorWidth; i++)
+                {
+                    for(int j = 0; i <monitorHeight; j++)
+                    {
+                        vertices[j,i].position = {j,i};
+                        c.getView();
+                    }
                 }
             }
         }
