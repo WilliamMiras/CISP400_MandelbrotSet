@@ -5,8 +5,8 @@ int main()
 {
 Event event;
 
-int monitorWidth = VideoMode::getDesktopMode.width();
-int monitorHeight = VideoMode::getDesktopMode.height();
+int monitorWidth = VideoMode::getDesktopMode().width;
+int monitorHeight = VideoMode::getDesktopMode().height;
 VideoMode res(monitorWidth, monitorHeight);
 float ratio = monitorHeight/monitorWidth;
 ComplexPlane c(ratio);
@@ -31,17 +31,12 @@ CurrentState now = CALCULATING;
         {
             if(event.type == sf::Event::MouseButtonPressed)
             {
-                if(event.mouseButton.button == sf::Mouse::Left)
-                {
-
-                }
-                if(event.mouseButton.button == sf::Mouse::Right)
-                {
-                    Vector2f clicked;
-                    clicked = win.mapPixelToCoords(Mouse::getPosition(win));
-                    c.zoomOut();
-                    c.setCenter(clicked);
-                }
+                Vector2f clicked;
+                clicked = win.mapPixelToCoords(Mouse::getPosition(win));
+                c.setCenter(clicked);
+                if(event.mouseButton.button == sf::Mouse::Left) {c.zoomIn();}
+                if(event.mouseButton.button == sf::Mouse::Right) {c.zoomOut();}
+                now = CALCULATING;
             }
             if(event.type == sf::Event::KeyPressed)
             {
@@ -52,19 +47,32 @@ CurrentState now = CALCULATING;
             }
             if(event.type ==sf::Event::MouseMoved)
             {
-                c.setMouseLocation(win.mapPixelToCoords(Mouse::getPosition(win)));
+                c.setMouseLocation(win.mapPixelToCoords(Mouse::getPosition(win),c.getView()));
             }
             if(now == CALCULATING)
             {
+                size_t counter;
                 Uint8 r,g,b;
                 for(int i = 0; i < monitorWidth; i++)
                 {
                     for(int j = 0; i <monitorHeight; j++)
                     {
                         vertices[j,i].position = {j,i};
-                        c.getView();
+                        Vector2f coords = win.mapPixelToCoords(Vector2i {float j,float i},c.getView());
+                        counter = c.countIterations(coords);
+                        c.iterationsToRGB(counter,r,g,b);
+                        vertices[j,i].color = {r,g,b};
                     }
                 }
+                now = DISPLAYING;
+                c.loadText(textbox);
+            }
+            if(now == DISPLAYING)
+            {
+                win.clear();
+                win.draw(vertices);
+                win.draw(textbox);
+                win.display();
             }
         }
     }

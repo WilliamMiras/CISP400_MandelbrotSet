@@ -16,6 +16,10 @@ ComplexPlane::ComplexPlane(float aspectRatio)
     m_view.setCenter(0.0, 0.0);
     m_zoomCount = 0;
 }
+View::getView()
+{
+    
+}
 
 void ComplexPlane::zoomIn()
 {
@@ -47,19 +51,19 @@ void ComplexPlane::loadText(Text& text)
 {
     //https://cplusplus.com/reference/sstream/stringstream/stringstream/
     stringstream ss;
-
+    text.setStr
 }
 
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
     complex<double> c(coord.x, coord.y);
     complex<double> z(0,0);
-    size_t iter;
+    size_t iter = 0;
     //for loop to count how many iterations?
-    for(int i = 0; i < 64; i++)
+    for(int i = 0; i < MAX_ITER; i++)
     {
-        z = pow(z,2) + c;
-        if(abs(z.real() + z.imag()) < 2)
+        z = z*z + c;
+        while(abs(z) < 2)
         {
             iter++;
         }
@@ -78,7 +82,7 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
    r = 255;
    g = 255;
    b = 255; // setting the values to white so we can do grayscale for testing
-   for(size_t i = count * 4; i > 0; i--)
+   for(size_t i = (count * 4) -1; i > 0; i--)
    {
     r--;
     g--;
