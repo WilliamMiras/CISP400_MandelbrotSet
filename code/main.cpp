@@ -24,7 +24,6 @@ vertices.setPrimitiveType(Points);
 vertices.resize(monitorHeight*monitorWidth);
 enum CurrentState {CALCULATING,DISPLAYING };
 CurrentState now = CALCULATING;
-
     while(win.isOpen())
     {
         while(win.pollEvent(event))
@@ -55,10 +54,10 @@ CurrentState now = CALCULATING;
                 Uint8 r,g,b;
                 for(int i = 0; i < monitorWidth; i++)
                 {
-                    for(int j = 0; i <monitorHeight; j++)
+                    for(int j = 0; j < monitorHeight; j++)
                     {
                         vertices[j,i].position = {j,i};
-                        Vector2f coords = win.mapPixelToCoords(Vector2i {float j,float i},c.getView());
+                        Vector2f coords = win.mapPixelToCoords(Vector2i {(float) j,(float) i},c.getView());
                         counter = c.countIterations(coords);
                         c.iterationsToRGB(counter,r,g,b);
                         vertices[j,i].color = {r,g,b};

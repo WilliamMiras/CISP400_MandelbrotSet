@@ -16,9 +16,9 @@ ComplexPlane::ComplexPlane(float aspectRatio)
     m_view.setCenter(0.0, 0.0);
     m_zoomCount = 0;
 }
-View::getView()
+View ComplexPlane::getView()
 {
-    
+return m_view;
 }
 
 void ComplexPlane::zoomIn()
@@ -51,7 +51,9 @@ void ComplexPlane::loadText(Text& text)
 {
     //https://cplusplus.com/reference/sstream/stringstream/stringstream/
     stringstream ss;
-    text.setStr
+    float centerx,centery,cursorx,cursory;
+    ss << m_view.getCenter().x << m_view.getCenter().y << m_mouseLocation.x << m_mouseLocation.y;
+    ss >> centerx >> centery >> cursorx >>cursory;
 }
 
 size_t ComplexPlane::countIterations(Vector2f coord)
@@ -60,7 +62,7 @@ size_t ComplexPlane::countIterations(Vector2f coord)
     complex<double> z(0,0);
     size_t iter = 0;
     //for loop to count how many iterations?
-    for(int i = 0; i < MAX_ITER; i++)
+    for(unsigned int i = 0; i < MAX_ITER; i++)
     {
         z = z*z + c;
         while(abs(z) < 2)
