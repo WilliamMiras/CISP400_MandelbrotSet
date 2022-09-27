@@ -52,13 +52,17 @@ void ComplexPlane::loadText(Text& text)
 
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
+    complex<double> c(coord.x, coord.y);
+    complex<double> z(0,0);
     size_t iter;
     //for loop to count how many iterations?
-    while(abs(sqrt(pow(coord.x,2)+ pow(coord.y,2))) < 2)
+    for(int i = 0; i < 64; i++)
     {
-
-
-        iter++;
+        z = pow(z,2) + c;
+        if(abs(z.real() + z.imag()) < 2)
+        {
+            iter++;
+        }
     }
 
     return iter;
@@ -74,7 +78,7 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
    r = 255;
    g = 255;
    b = 255; // setting the values to white so we can do grayscale for testing
-   for(size_t i = count; i > 0; i--)
+   for(size_t i = count * 4; i > 0; i--)
    {
     r--;
     g--;
