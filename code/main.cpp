@@ -37,12 +37,9 @@ CurrentState now = CALCULATING;
                 if(event.mouseButton.button == sf::Mouse::Right) {c.zoomOut();}
                 now = CALCULATING;
             }
-            if(event.type == sf::Event::KeyPressed)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
-                if(event.KeyPressed == sf::Keyboard::Escape)
-                {
-                    win.close();
-                }
+                window.close();
             }
             if(event.type ==sf::Event::MouseMoved)
             {
