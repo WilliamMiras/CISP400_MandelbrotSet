@@ -8,9 +8,11 @@ Event event;
 int monitorWidth = VideoMode::getDesktopMode().width;
 int monitorHeight = VideoMode::getDesktopMode().height;
 VideoMode res(monitorWidth, monitorHeight);
+
 float ratio = monitorHeight/monitorWidth;
 ComplexPlane c(ratio);
 RenderWindow win(res,"Mandlebrot Set", Style::Default);
+
 Font font;
 font.loadFromFile("/fonts/OldSchoolAdventures-42j9.ttf");
 Text textbox("test",font,15);
@@ -19,11 +21,13 @@ textbox.setOutlineColor(sf::Color::Black);
 textbox.setScale(2.4,2.4);
 textbox.setStyle(sf::Text::Bold);
 textbox.setPosition(0,0);
+
 VertexArray vertices;
 vertices.setPrimitiveType(Points);
 vertices.resize(monitorHeight*monitorWidth);
 enum CurrentState {CALCULATING,DISPLAYING };
 CurrentState now = CALCULATING;
+
     while(win.isOpen())
     {
         while(win.pollEvent(event))
