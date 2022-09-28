@@ -54,8 +54,9 @@ void ComplexPlane::loadText(Text& text)
     float centerx,centery,cursorx,cursory;
     ss << m_view.getCenter().x << m_view.getCenter().y << m_mouseLocation.x << m_mouseLocation.y;
     ss >> centerx >> centery >> cursorx >>cursory;
-    text.setString("Mandelbrot Set\nCenter: (" + centerx + "," + centery + ")\n" )
-}
+    text.setString("Mandelbrot Set\nCenter: (" + to_string(centerx) + "," + to_string(centery) + ")\n" + "Cursor: " + "(" + to_string(cursorx) + "," + to_string(cursory) + ")\n" + "Left-click to Zoom in\nRight-click to Zoom out");
+    text.setPosition(0,0);
+    }
 
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
@@ -63,13 +64,11 @@ size_t ComplexPlane::countIterations(Vector2f coord)
     complex<double> z(0,0);
     size_t iter = 0;
     //for loop to count how many iterations?
-    for(unsigned int i = 0; i < MAX_ITER; i++)
+    z = z*z + c;
+    while(abs(z) < 2)
     {
+        iter++;
         z = z*z + c;
-        while(abs(z) < 2)
-        {
-            iter++;
-        }
     }
 
     return iter;
@@ -83,12 +82,36 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
         its actually Uint8! which is just an integer from 0 to 255.
     */
    r = 255;
-   g = 255;
+   g = 0;
    b = 255; // setting the values to white so we can do grayscale for testing
    for(size_t i = (count * 4) -1; i > 0; i--)
    {
-    r--;
-    g--;
-    b--;
+    if(i > 224)
+    {
+        if(r < 8)
+        {
+            r -=7;
+        }
+        else
+        {
+            r -= 8;
+        }
+        
+    }
+    else if(i > 192)
+    {
+        if(g < 248)
+        {
+            g += 8;
+        }
+        else
+        {
+            g += 7;
+        }
+    }
+    else if(i > 160)
+    {
+        
+    }
    }
 }
