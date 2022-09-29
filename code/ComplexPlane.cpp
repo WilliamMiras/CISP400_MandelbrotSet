@@ -81,7 +81,8 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
         its actually Uint8! which is just an integer from 0 to 255.
     */
    // setting the values to white so we can do grayscale for testing
-   if(count == MAX_ITER)
+   count = count * 4;
+   if(count == MAX_ITER * 4)
    {
     r = 0;
     g = 0;
@@ -115,8 +116,8 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
    }
    else
    {
-    r = 0;
-    g = 0;
+    r = 100;
+    g = 50;
     b = 255;
    }
    }

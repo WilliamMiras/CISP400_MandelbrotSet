@@ -59,7 +59,7 @@ CurrentState now = CALCULATING;
                     for(int i = 0; i < monitorHeight; i++)
                     {
                         size_t counter = 0;
-                        Uint8 r,g,b = 0;
+                        Uint8 r,g,b = 255;
                         vertices[j+i*monitorWidth].position = {(float)j,(float)i};
                         Vector2i points{j,i};
                         Vector2f coords = win.mapPixelToCoords(points,c.getView());
