@@ -1,5 +1,6 @@
 #include "ComplexPlane.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 using namespace sf;
 int main()
 {
@@ -14,7 +15,7 @@ ComplexPlane c(ratio);
 RenderWindow win(res,"Mandlebrot Set", Style::Default);
 
 Font font;
-font.loadFromFile("/fonts/OldSchoolAdventures-42j9.ttf");
+font.loadFromFile("fonts/OldSchoolAdventures-42j9.ttf");
 Text textbox("test",font,15);
 textbox.setFillColor(sf::Color::White);
 textbox.setOutlineColor(sf::Color::Black);
@@ -22,9 +23,7 @@ textbox.setScale(2.4,2.4);
 textbox.setStyle(sf::Text::Bold);
 textbox.setPosition(0,0);
 
-VertexArray vertices;
-vertices.setPrimitiveType(Points);
-vertices.resize(monitorHeight*monitorWidth);
+VertexArray vertices(Points,monitorHeight*monitorWidth);
 enum CurrentState {CALCULATING,DISPLAYING };
 CurrentState now = CALCULATING;
 
@@ -41,31 +40,32 @@ CurrentState now = CALCULATING;
                 if(event.mouseButton.button == sf::Mouse::Right) {c.zoomOut();}
                 now = CALCULATING;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-            {
-                win.close();
-            }
-            if(event.type ==sf::Event::MouseMoved)
+            
+            if(event.type == sf::Event::MouseMoved)
             {
                 c.setMouseLocation(win.mapPixelToCoords(Mouse::getPosition(win),c.getView()));
             }
-            if(now == CALCULATING)
+        }
+        if(now == CALCULATING)
             {
-                size_t counter;
-                Uint8 r,g,b;
-                for(int i = 0; i < monitorWidth; i++)
+                
+                for(int i = 0; i < monitorHeight; i++)
                 {
-                    for(int j = 0; j < monitorHeight; j++)
+                    for(int j = 0; j < monitorWidth; j++)
                     {
-                        vertices[j,i].position = {j,i};
-                        Vector2f coords = win.mapPixelToCoords(Vector2i {(float) j,(float) i},c.getView());
+                        size_t counter = 0;
+                        Uint8 r,g,b = 0;
+                        vertices[j+i*monitorWidth].position = {(float)j,(float)i};
+                        Vector2i points{j,i};
+                        Vector2f coords = win.mapPixelToCoords(points,c.getView());
                         counter = c.countIterations(coords);
-                        c.iterationsToRGB(counter,r,g,b);
-                        vertices[j,i].color = {r,g,b};
+                        c.iterationsToRGB(80,r,g,b);
+                        vertices[j+i*monitorWidth].color = {r,g,b};
                     }
                 }
                 now = DISPLAYING;
                 c.loadText(textbox);
+                
             }
             if(now == DISPLAYING)
             {
@@ -74,7 +74,10 @@ CurrentState now = CALCULATING;
                 win.draw(textbox);
                 win.display();
             }
-        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            {
+                win.close();
+            }
     }
 return 0;
 }
