@@ -18,7 +18,7 @@ font.loadFromFile("fonts/OldSchoolAdventures-42j9.ttf");
 Text textbox("test",font,15);
 textbox.setFillColor(sf::Color::White);
 textbox.setOutlineColor(sf::Color::Black);
-textbox.setScale(2.4,2.4);
+textbox.setScale(1,1);
 textbox.setStyle(sf::Text::Bold);
 textbox.setPosition(0,0);
 
@@ -38,10 +38,11 @@ CurrentState now = CALCULATING;
             if(event.type == sf::Event::MouseButtonPressed)
             {
                 Vector2f clicked;
-                clicked = win.mapPixelToCoords(Mouse::getPosition(win));
-                c.setCenter(clicked);
+                clicked = win.mapPixelToCoords(Mouse::getPosition(win),c.getView());
+                
                 if(event.mouseButton.button == sf::Mouse::Left) {c.zoomIn();}
                 if(event.mouseButton.button == sf::Mouse::Right) {c.zoomOut();}
+                c.setCenter(clicked);
                 now = CALCULATING;
             }
             
