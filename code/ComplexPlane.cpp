@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <complex>
-#include <cstdlib>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 #include "ComplexPlane.h"
@@ -23,7 +23,7 @@ return m_view;
 
 void ComplexPlane::zoomIn()
 {
-    m_zoomCount += 1;
+    m_zoomCount++;
     float x_size = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
     float y_size = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
     m_view.setSize(x_size, y_size);
@@ -31,7 +31,7 @@ void ComplexPlane::zoomIn()
 
 void ComplexPlane::zoomOut()
 {
-    m_zoomCount -= 1;
+    m_zoomCount--;
     float x_size = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
     float y_size = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
     m_view.setSize(x_size, y_size);
@@ -81,13 +81,43 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
         its actually Uint8! which is just an integer from 0 to 255.
     */
    // setting the values to white so we can do grayscale for testing
-   r = 255;
-   g = 255;
-   b = 255;
-   for(size_t ix = count*4; ix > 0; ix--)
+   if(count == MAX_ITER)
    {
-    r--;
-    g--;
-    b--;
+    r = 0;
+    g = 0;
+    b = 0;
+   }
+   else
+   {
+    if(count > 204)
+    {
+        r = 255;
+        g = 0;
+        b = 0;
+    }
+    else if(count > 153)
+    {
+        r = 255;
+        g = 255;
+        b = 0;
+    }
+    else if(count > 102)
+    {
+        r = 0;
+        g = 255;
+        b = 0;
+   }
+   else if(count > 51)
+   {
+    r = 0;
+    g = 255;
+    b = 255;
+   }
+   else
+   {
+    r = 0;
+    g = 0;
+    b = 255;
+   }
    }
 }

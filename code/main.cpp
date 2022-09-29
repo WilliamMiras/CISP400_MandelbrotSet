@@ -5,12 +5,11 @@ using namespace sf;
 int main()
 {
 Event event;
-
-int monitorWidth = VideoMode::getDesktopMode().width;
-int monitorHeight = VideoMode::getDesktopMode().height;
-VideoMode res(monitorWidth, monitorHeight);
-
-float ratio = monitorHeight/monitorWidth;
+VideoMode res(1920, 1080);
+VideoMode monitor = res.getDesktopMode();
+float monitorWidth = monitor.width;
+float monitorHeight = monitor.height;
+float ratio = monitorHeight / monitorWidth;
 ComplexPlane c(ratio);
 RenderWindow win(res,"Mandlebrot Set", Style::Default);
 
@@ -24,13 +23,18 @@ textbox.setStyle(sf::Text::Bold);
 textbox.setPosition(0,0);
 
 VertexArray vertices(Points,monitorHeight*monitorWidth);
-enum CurrentState {CALCULATING,DISPLAYING };
+enum CurrentState { CALCULATING, DISPLAYING };
 CurrentState now = CALCULATING;
 
     while(win.isOpen())
     {
         while(win.pollEvent(event))
         {
+            if (event.key.code == Keyboard::Escape)
+            {
+                win.close();
+            }
+            if(event.type == Event::Closed) {win.close();}
             if(event.type == sf::Event::MouseButtonPressed)
             {
                 Vector2f clicked;
@@ -49,9 +53,9 @@ CurrentState now = CALCULATING;
         if(now == CALCULATING)
             {
                 
-                for(int i = 0; i < monitorHeight; i++)
+                for(int j = 0; j < monitorWidth; j++)
                 {
-                    for(int j = 0; j < monitorWidth; j++)
+                    for(int i = 0; i < monitorHeight; i++)
                     {
                         size_t counter = 0;
                         Uint8 r,g,b = 0;
@@ -59,7 +63,7 @@ CurrentState now = CALCULATING;
                         Vector2i points{j,i};
                         Vector2f coords = win.mapPixelToCoords(points,c.getView());
                         counter = c.countIterations(coords);
-                        c.iterationsToRGB(80,r,g,b);
+                        c.iterationsToRGB(counter,r,g,b);
                         vertices[j+i*monitorWidth].color = {r,g,b};
                     }
                 }
@@ -74,10 +78,7 @@ CurrentState now = CALCULATING;
                 win.draw(textbox);
                 win.display();
             }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-            {
-                win.close();
-            }
+            
     }
 return 0;
 }
