@@ -37,6 +37,7 @@ void ComplexPlane::zoomOut()
     m_view.setSize(x_size, y_size);
 }
 
+
 void ComplexPlane::setCenter(Vector2f coord)
 {
     m_view.setCenter(coord);
@@ -92,33 +93,33 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
    {
     if(count > 204)
     {
-        r = 255;
+        r = 255 - ((count % 15) * 16);
         g = 0;
         b = 0;
     }
     else if(count > 153)
     {
-        r = 255;
-        g = 255;
+        r = 255 - ((count % 15) * 16);
+        g = 170 - ((count % 15) * 16);
         b = 0;
     }
     else if(count > 102)
     {
-        r = 0;
-        g = 255;
+        r = 225 - ((count % 15) * 16);
+        g = 255 - ((count % 15) * 16);
         b = 0;
    }
    else if(count > 51)
    {
     r = 0;
-    g = 255;
-    b = 255;
+    g = 175 - ((count % 15) * 16);
+    b = 225 - ((count % 15) * 16);
    }
    else
    {
-    r = 100;
-    g = 50;
-    b = 255;
+    r = 0;
+    g = 183 - ((count % 15) * 16);
+    b = 255 - ((count % 16) * 16);
    }
    }
 }
