@@ -11,7 +11,7 @@ float monitorWidth = monitor.width;
 float monitorHeight = monitor.height;
 float ratio = monitorHeight / monitorWidth;
 ComplexPlane c(ratio);
-RenderWindow win(res,"Mandlebrot Set", Style::Default);
+RenderWindow win(monitor,"Mandlebrot Set", Style::Default);
 
 Font font;
 font.loadFromFile("fonts/OldSchoolAdventures-42j9.ttf");
